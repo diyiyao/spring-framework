@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2019 the original author or authors.
+ * Copyright 2002-2020 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,6 @@ import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import org.apache.commons.logging.Log;
 
 import org.springframework.core.GenericTypeResolver;
@@ -52,7 +51,7 @@ public abstract class Jackson2CodecSupport {
 	/**
 	 * The key for the hint to specify a "JSON View" for encoding or decoding
 	 * with the value expected to be a {@link Class}.
-	 * @see <a href="https://wiki.fasterxml.com/JacksonJsonViews">Jackson JSON Views</a>
+	 * @see <a href="https://www.baeldung.com/jackson-json-view-annotation">Jackson JSON Views</a>
 	 */
 	public static final String JSON_VIEW_HINT = Jackson2CodecSupport.class.getName() + ".jsonView";
 
@@ -100,8 +99,7 @@ public abstract class Jackson2CodecSupport {
 	}
 
 	protected JavaType getJavaType(Type type, @Nullable Class<?> contextClass) {
-		TypeFactory typeFactory = this.objectMapper.getTypeFactory();
-		return typeFactory.constructType(GenericTypeResolver.resolveType(type, contextClass));
+		return this.objectMapper.constructType(GenericTypeResolver.resolveType(type, contextClass));
 	}
 
 	protected Map<String, Object> getHints(ResolvableType resolvableType) {
